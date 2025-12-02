@@ -1,0 +1,62 @@
+def Open(file_name, mode):
+    try:
+        file = open(file_name, mode)
+    except:
+        print("File", file_name, "wasn't opened!")
+        return None
+    else:
+        print("File", file_name, "was opened!")
+        return file
+
+file1_name = "TF8_1.txt"
+file2_name = "TF8_2.txt"
+
+file_1_w = Open(file1_name, "w")
+if(file_1_w != None):
+    file_1_w.write("The flight number 1717 is postponed for 40 minute, the boarding will start at 5 a.m.\n")
+    file_1_w.write("Second 2 line with numbers 89 and 0\n")
+    file_1_w.write("Third line without digits\n")
+    file_1_w.write("Line with 12345 digits and 678 digits\n")
+    file_1_w.write("Short line\n")
+    file_1_w.write("Very long line with many characters and digits 1 2 3 4 5 6 7 8 9 0")
+    print("Information was successfully added to TF8_1.txt!")
+    file_1_w.close()
+    print("File TF8_1.txt was closed!")
+
+file_2_r = Open(file1_name, "r")
+file_2_w = Open(file2_name, "w")
+if file_2_r != None and file_2_w != None:
+    content = file_2_r.read()
+    
+    text_without_digits = ""
+    for char in content:
+        if not char.isdigit():
+            text_without_digits += char
+    
+    text_without_digits = text_without_digits.replace('\n', ' ')
+    
+    blocks = []
+    i = 0
+    while i < len(text_without_digits):
+        block = text_without_digits[i:i+10]
+        blocks.append(block)
+        i += 10
+    
+    counter = 1
+    for block in blocks:
+        if block.strip():
+            line_number = str(counter).rjust(5)
+            file_2_w.write(f"{line_number} {block}\n")
+            counter += 1
+    
+    file_2_r.close()
+    file_2_w.close()
+    print("Files were closed!")
+
+print("New sequence:")
+file_3_r = Open(file2_name, "r")
+if file_3_r != None:
+    for line in file_3_r:
+        print(line, end='')
+    print("File TF8_2.txt was closed!")
+    file_3_r.close()
